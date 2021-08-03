@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="table-responsive">
+    <table class="table table-striped w-auto">
+        <thead>
+            <tr class="d-flex">
+                <th scope="col" class="col-1">Report #</th>
+                {% if current_user.is_admin or current_user.is_dosimetrist %}
+                <th scope="col" class="col-1 px-0">Status</th>
+                {% endif %}
+                <th scope="col" class="col-1 px-0">Report date</th>
+                <th scope="col" class="col-1">Customer</th>
+                <th scope="col" class="col-2">Assigment</th>
+                <th scope="col" class="col-1 px-0">Source code</th>
+                <th scope="col" class="col-1 px-0">Isotope</th>
+                <th scope="col" class="col-1 px-0">Activity</th>
+                <th scope="col" class="col-1 px-0">Source serial #</th>
+                <th scope="col" class="col-1 px-0">Wiped object</th>
+                <th scope="col" class="col-1 px-0">Serial number</th>
+                <th scope="col" class="col-1 px-0">Wipe date</th>
+                <th scope="col" class="col-1 px-0">BKG CPM</th>
+                <th scope="col" class="col-1 px-0">GROSS CPM</th>
+                <th scope="col" class="col-1 px-0">NET CPM</th>
+                <th scope="col" class="col-3 px-0">Device</th>
+                <th scope="col" class="col-2 px-0">Bill for</th>
+                <th scope="col" class="col-2 px-0">E-mail</th>
+                <th scope="col" class="col-1 px-0">IKE recieved</th>
+                <th scope="col" class="col-1 px-0">Results sent</th>
+                <th scope="col" class="col-1 px-0">Analasys</th>
+                <th scope="col" class="col-2 px-0">Comments</th>
+                <th scope="col" class="col-2 px-0">Bill</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for report in all_reports %}
+                <tr class="d-flex">
+                    {% if current_user.is_admin or current_user.is_dosimetrist %}
+                    <td class="col-1"><a href="{{ url_for('chosen_report', report_path=report.report_path) }}" onclick="$('#loading').show();">{{ report.report_number }}</a></td>
+                    <td class="col-1">{{ report.status }}</td>
+                    {% else %}
+                    <td class='col-1'><a href="{{ url_for('pdf_render', report_path = report.report_path) }}" onclick="$('#loading').show();">{{ report.report_number }}</a></td>
+                    {% endif %}
+                    <td class="col-1 px-0">{{ report.report_date }}</td>
+                    <td class="col-1">{{ report.customer }}</td>
+                    <td class="col-2">{{ report.task_and_place }}</td>
+                    <td class="col-1 px-0">{{ report.source_code }}</td>
+                    <td class="col-1 px-0">{{ report.isotope }}</td>
+                    <td class="col-1 px-0">{{ report.activity }}</td>
+                    <td class="col-1 px-0">{{ report.source_serial_number }}</td>
+                    <td class="col-1 px-0">{{ report.wiped_object }}</td>
+                    <td class="col-1 px-0">{{ report.wiped_serial_number }}</td>
+                    <td class="col-1 px-0">{{ report.wipe_date }}</td>
+                    <td class="col-1 px-0">{{ report.bkg_cpm }}</td>
+                    <td class="col-1 px-0">{{ report.gross_cpm }}</td>
+                    <td class="col-1 px-0">{{ report.net_cpm }}</td>
+                    <td class="col-3 px-0">{{ report.device }}</td>
+                    <td class="col-2 px-0">{{ report.bill_for }}</td>
+                    <td class="col-2 px-0">{{ report.email }}</td>
+                    <td class="col-1 px-0">{{ report.ike_recieved }}</td>
+                    <td class="col-1 px-0">{{ report.results_sent }}</td>
+                    <td class="col-1 px-0">{{ report.days_for_analasys }}</td>
+                    <td class="col-2 px-0">{{ report.comments }}</td>
+                    <td class="col-2 px-0">{{ report.bill }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

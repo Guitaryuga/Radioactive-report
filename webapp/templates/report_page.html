@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        <div class="col-6 mt-3 mb-3">
+            <form action="/reports" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group mb-3">
+                  {{ form.report_field() }}
+                </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class='col-3'>
+                            <button type="submit" class="w-100 btn btn-lg btn-primary" onclick="$('#loading').show();">Search</button>
+                        </div>
+                        <div class='col-3'>
+                            <a href="{{ url_for('all_reports') }}"><button type="button" class="w-100 btn btn-lg btn-primary" onclick="$('#loading').show();">Show all</button></a>
+                        </div>   
+                    </div>
+            </form>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <tbody>
+            {% for report in correct_report %}
+            <tr>
+                <th scope="row">Report №</th>
+                <td>{{ report.report_number }}</td>
+                <th scope="row">Report date</th>
+                <td>{{ report.report_date }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Customer</th>
+                <td>{{ report.customer }}</td>
+                <th scope="row">Assigment</th>
+                <td>{{ report.task_and_place }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Source code</th>
+                <td>{{ report.source_code }}</td>
+                <th scope="row">Wiped object</th>
+                <td>{{ report.wiped_object }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Source serial №</th>
+                <td>{{ report.source_serial_number }}</td>
+                <th scope="row">Wiped serial №</th>
+                <td>{{ report.wiped_serial_number }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Isotope</th>
+                <td>{{ report.isotope }}</td>
+                <th scope="row">Wipe date</th>
+                <td>{{ report.wipe_date }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Activity</th>
+                <td colspan="3">{{ report.activity }}</td>
+            </tr>
+            <tr>
+                <th scope="row">BKG CPM</th>
+                <td>{{ report.bkg_cpm }}</td>
+                <th scope="row">Removable activity Micro CI</th>
+                <td>{{ report.removable_activity_micro_ci }}</td>
+            </tr>
+            <tr>
+                <th scope="row">GROSS CPM</th>
+                <td>{{ report.gross_cpm }}</td>
+                <th scope="row">Removable activity BQ</th>
+                <td>{{ report.removable_activity_bq }}</td>
+            </tr>
+            <tr>
+                <th scope="row">NET CPM</th>
+                <td>{{ report.net_cpm }}</td>
+                <th scope="row">Limit Micro CI</th>
+                <td>{{ report.limit_micro_ci }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Device</th>
+                <td colspan="3">{{ report.device }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Bill for:</th>
+                <td>{{ report.bill_for }}</td>
+                <th scope="row">E-mail</th>
+                <td>{{ report.email }}</td>
+            </tr>
+            <tr>
+                <th scope="row">IKE recieved</th>
+                <td>{{ report.ike_recieved }}</td>
+                <th scope="row">Analasys, days</th>
+                <td>{{ report.days_for_analasys }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Results sent</th>
+                <td>{{ report.results_sent }}</td>
+                <th scope="row">Bill</th>
+                <td>{{ report.bill }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Comments</th>
+                <td colspan="3">{{ report.comments }}</td>
+            </tr>
+            {% if report.photo_link == 'No file attached' %}
+                <tr>
+                    <th scope="row">File attached</th>
+                    <td colspan="3">No files attached</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th scope="row">File attached</th>
+                    <td colspan="3"><a href="{{ url_for('uploaded_files', filename=report.photo_link) }}"><img style="height: 140px; width: 200px" src="{{ url_for('uploaded_files', filename=report.photo_link) }}"></a></td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-3">
+            <a href="{{ url_for('pdf_render', report_path = report.report_path) }}"><button type="button" class="w-100 btn btn-lg btn-primary" onclick="$('#loading').show();">Generate report</button></a>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

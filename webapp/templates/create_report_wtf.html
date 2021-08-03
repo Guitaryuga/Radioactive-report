@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+   
+{% block content %}
+        <div class="d-flex justify-content-center">
+          
+            <div class="col-7 mt-3 mb-3">
+                <form action="/report_creation" method="POST" enctype="multipart/form-data" onsubmit="$('#loading').show();">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group mb-3">
+                      {{ form.date.label }}
+                      {{ form.date() }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.customer.label }}
+                        {{ form.customer() }}
+                        {% for error in form.source_serial_number.errors %}
+                            <span style="color: red;">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.task_and_place.label }}
+                        {{ form.task_and_place() }}
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            {{ form.source_code.label }}
+                            {{ form.source_code() }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            {{ form.source_serial_number.label }}
+                            {{ form.source_serial_number }}
+                            {% for error in form.source_serial_number.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 mb-3">
+                            {{ form.wiped_object.label }}
+                            {{ form.wiped_object }}
+                        </div>
+                        <div class="col-4 mb-3">
+                            {{ form.wiped_serial_number.label }}
+                            {{ form.wiped_serial_number }}
+                        </div>
+                        <div class="col-4 mb-3 float-right">
+                            {{ form.wipe_date.label }}
+                            {{ form.wipe_date }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            {{ form.bkg_cpm.label }}
+                            {{ form.bkg_cpm }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            {{ form.gross_cpm.label }}
+                            {{ form.gross_cpm }}
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.device.label }}
+                        {{ form.device }} 
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            {{ form.bill_for.label }}
+                            {{ form.bill_for }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            {{ form.email.label }}
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class="col-4 mb-3">
+                            {{ form.ike_recieved.label }}
+                            {{ form.ike_recieved }}
+                        </div>
+                        <div class="col-4 mb-3">
+                            {{ form.results_sent.label }}
+                            {{ form.results_sent }}
+                        </div>
+                        <div class="col-4 mb-3">
+                            {{ form.foto.label }}
+                            {{ form.foto }}
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.bill.label }}
+                        {{ form.bill() }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form.comments.label }}
+                        {{ form.comments }}
+                    </div>
+                    <div class="row">
+                        <div class='col-3'><br/></div>
+                        <div class='col-6'>{{ form.submit }}</div>
+                        <div class='col-3'><br/></div>
+                    </div>  
+                </form>
+            </div>
+          
+        </div>
+{% endblock %}

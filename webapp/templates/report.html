@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }}</title>
+  </head>
+  <body>
+    <div class="container keep-together">
+        <table id="negativemargin-top">
+            <tr id="logo">
+                <td style="text-align:center">ЭНЕРГО КАРГО</td>
+                <td width="10%"><img src="{{ logo_path }}"></td>
+                <td style="text-align:center">ЭКСПЕРТИЗА</td>
+            </tr>
+        </table>
+        <div style="text-align:center" id="adress">Россия, 125416 Московская область, г.Химки, шоссе Шереметьевское, д.1, строен.1</div>
+        <div style="text-align:center" id="phones">Тел. +7 (495) 000-00-00, +7 (495) 000-00-00; Факс +7 (495) 000-00-00;  www.example.com</div>
+        <table width='100%' id="margin"> 
+            <tr>
+                <td style="text-align:center" id="laboratory">АО «Энерго Карго - экспертиза» / Лаборатория радиационного контроля</td>
+            </tr>
+            <tr>
+                <td style="text-align:center" id="license">Лицензии Ростехнадзора №№ ЦО-Е07-521-9332, ЦО-У43-789-1158 от 08 февраля 2016 г.</td>
+            </tr>
+        </table>
+        <table width="100%" id="margin">
+            <tr>
+                <td width="20%" id="reportnumber">Отчет #&nbsp;&nbsp;{{ report.report_number }}</td>
+                <td id="reportnumber">&nbsp;&nbsp;от {{ date_rus }} г.</td>
+                <td style="text-align:right" id="reportnumber">Страница 1 из 1</td>
+            </tr>
+        </table>
+        <table width="100%" id="margin">
+            <tr id="report">
+                <th width='20%' style="text-align:left;vertical-align:top">Заказчик:</th>
+                <td colspan="3" id="addborder">{{ report.customer }}</td>
+            </tr>
+            <tr id="report">
+                <th style="text-align:left;vertical-align:top">Задача:</th>
+                <td colspan="3" id="addborder">{{ report.task_and_place }}</td>
+            </tr>
+            <tr id="report">
+                <th style="text-align:left;vertical-align:top">Данные:</th>
+                <td colspan='2' id="addborder">
+                    <table width='100%'>
+                        <tr>
+                            <td><strong>Код источника:</strong></td>
+                            <td>&nbsp;&nbsp;{{ report.source_code }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Изотоп:</strong></td>
+                            <td>&nbsp;&nbsp;{{ report.isotope }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Активность:<strong></td>
+                            <td>&nbsp;&nbsp;{{ report.activity }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Серийный номер:</strong></td>
+                            <td>&nbsp;&nbsp;{{ report.source_serial_number }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan='2' id="addborder">
+                    <table width='100%'>
+                        <tr id='report'>
+                            <td><strong>Дата взятия пробы:</strong></td>
+                            <td>{{ wipe_date_rus }} г.</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr id='report'>
+                            <td><strong>Дата анализа:</strong></td>
+                            <td>{{ date_rus }} г.</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+           
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align:left;vertical-align:top" id="report">Объекты</th>
+                <td colspan="3" id="addborder">
+                    <table>
+                        <tr>
+                            <td id='report'><strong>Пробы взяты со следующих объектов:</strong></td>
+                            <td id='report'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ report.wiped_object }}</td>
+                        </tr>
+                        <tr>
+                            <td id='report'><strong>Серийный номер:</strong></td>
+                            <td id='report'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ report.wiped_serial_number }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr id='report'>
+                <th style="text-align:left;vertical-align:top">Исследование:</th>
+                <td colspan="3" id="addborder">Проведенные тесты-мазки будут проанализированы без предварительной обработки с использованием счетчика сцинтилляционного детектора.</td>
+            </tr>
+            <tr id='report'>
+                <th style="text-align:left;vertical-align:top">Приборы:</th>
+                <td colspan="3" id='addborder'>{{ report.device }}</td>
+            </tr>
+            <tr id='report'>
+                <th style="text-align:left;vertical-align:top">Пояснение:</th>
+                <td colspan="3" id="addborder"><strong>Нормативные документы:</strong>
+                    <br/>Инструкция по эксплуатации ДКС-96, БДЗА-96, БДЗБ-96, БДМГ-96.<br/>
+                    <strong>МУ 2.6.5.032-2017</strong> «Контроль радиоактивного загрязнения поверхностей»<br/>
+                    <strong>СанПиН 2.6.1.1281-03</strong>«Санитарные правила по радиационной безопасности персонала и населения при транспортировании радиоактивных материалов (веществ)»<br/>
+                    <strong>СанПиН 2.6.1.1202-03</strong> «Гигиенические требования к использованию закрытых радионуклидных источников ионизирующего излучения при геофизических работах на буровых скважинах»<br/>
+                    <strong>СанПиН 2.6.1.2523-09</strong> «Нормы радиационной безопасности НРБ-99/2009»<br/>
+                    <strong>СанПиН 2.6.1.2612-10</strong> «Основные санитарные правила обеспечения радиационной безопасности (ОСПОРБ 99/2010)»<br/>
+                    <strong>ГОСТ Р 51919-2002</strong> «Источники ионизирующего излучения радионуклидные закрытые.<br/> Методы испытания на утечку»<br/>
+                    <br/>В российском законодательстве проводится различие между тестами-мазками, взятыми непосредственно из капсулы источника (тест на утечку), и проверками на загрязнение.<br/>
+                    Для проб снятых с поверхности упаковки активность выше 1 частиц/мин х см2 для<br/>
+                    альфа-частиц или 10 частиц/мин х см2 для бета-частиц, следует рассматривать как радиоактивное загрязнение. Для проб снятых с поверхности контейнера/капсулы источника активность выше 1 частиц/мин х см2 альфа-частиц или 100 частиц/мин х см2 для бета-частиц, следует рассматривать как радиоактивное загрязнение.
+                </td>
+            </tr>
+            <tr>
+                <th rowspan="3" style="text-align:left;vertical-align:top" id="report">Результат:</th>
+                <td id="addborder">
+                    <table width='100%'>
+                        <tr>
+                            <td style="text-align:center" id='report'>Фон, част\мин</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" id='report'>{{ report.bkg_cpm }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td id="addborder">
+                    <table width='100%'>
+                        <tr>
+                            <td style="text-align:center" id='report'>Общее, част\мин</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" id='report'>{{ report.gross_cpm }} </td>
+                        </tr>
+                    </table>
+                </td>
+                <td id="addborder">
+                    <table width='100%'>
+                        <tr>
+                            <td style="text-align:center" id='report'>Проба, част\мин</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center" id='report'>{{ report.net_cpm }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td id="addborder" colspan="3">
+                    <table width='100%'>
+                        <tr id='report'>
+                            <td width='33%' style="text-align:center">Снимаемое загрязнение</td>
+                            <td>{{ report.removable_activity_micro_ci }} мкКи</td>
+                        </tr>
+                        <tr id='report'>
+                            <td>&nbsp;</td>
+                            <td style="text-align:left">{{ report.removable_activity_bq }} Бк</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr id="report">
+                <td colspan="3" id="addborder">
+                    Все тесты-мазки имели измеренную активность ниже предела обнаружения.<br/>
+                    Утечкой в источнике считается активность теста-мазка превышающая 0,005 мкКи.<br/>
+                    В соответствии с ИКАО TI и IATA DGR уровень снимаемого радиоактивного загрязнения на<br/>
+                    любой внешней поверхности любой упаковки не должен превышать 4 Бк / см2 для β- и γ-излучателей.
+                </td>
+            </tr>
+        </table>
+        <table id='margin'>
+            <tr>
+                <td id="signature">Подпись:</td>
+                <td><img style="height: 50%; width: 55%" src="{{ signature_path }}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- English version -->
+
+    <div class="container keep-together break-before">
+        <table id="negativemargin-top">
+            <tr id='logo'>
+                <td width="44%" style="text-align:center">ENERGOCARGO</td>
+                <td width="10%"><img src="{{ logo_path }}"></td>
+                <td style="text-align:center">EXPERTISE</td>
+            </tr>
+        </table>
+        <div style="text-align:center" id="adress">Russian Federation, 125416, Moscow city region, Khimki, Sheremetievskoye highway 1 bld.1</div>
+        <div style="text-align:center" id="phones">Tel. +7 (495) 000-00-00, +7 (495) 000-00-00; Fax +7 (495) 000-00-00;  www.example.com</div>
+        <table width='100%' id="margin"> 
+            <tr>
+                <td style="text-align:center" id="laboratory">JSC Energoсargo - expertise / Radiation control Laboratory</td>
+            </tr>
+            <tr>
+                <td style="text-align:center" id="license">Licenses ## ЦО-Е07-521-9332, ЦО-У43-789-1158 dated 8th of February, 2016.</td>
+            </tr>
+
+        </table>
+        <table width="100%" id="margin">
+            <tr>
+                <td width="20%" id="reportnumber">Report #&nbsp;&nbsp;{{ report.report_number }}</td>
+                <td id="reportnumber">&nbsp;&nbsp;dated {{ date_eng }}</td>
+                <td style="text-align:right" id="reportnumber">Page 1 of 1</td>
+            </tr>
+        </table>
+        <table width="100%" id="margin">
+            <tr id='report'>
+                <th width='20%' style="text-align:left;vertical-align:top">Customer:</th>
+                <td colspan="3" id="addborder">{{ report.customer_eng }}</td>
+            </tr>
+            <tr id='report'>
+                <th style="text-align:left;vertical-align:top">Assignment:</th>
+                <td colspan="3" id="addborder">{{ report.task_and_place_eng }}
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align:left;vertical-align:top" id="report">Your reference:</th>
+                <td colspan='2' id="addborder">
+                    <table width='100%'>
+                        <tr id="report">
+                            <td><strong>Source code:</strong></td>
+                            <td>&nbsp;&nbsp;{{ report.source_code_eng }}</td>
+                        </tr>
+                        <tr id="report">
+                            <td><strong>Isotope:</strong></td>
+                            <td>&nbsp;&nbsp;{{ report.isotope_eng }}</td>
+                        </tr>
+                        <tr id="report">
+                            <td><strong>Activity:<strong></td>
+                            <td>&nbsp;&nbsp;{{ report.activity_eng }}</td>
+                        </tr>
+                        <tr id="report">
+                            <td><strong>Serial number:</strong></td>
+                            <td>&nbsp;&nbsp;{{ report.source_serial_number }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td colspan='2' id="addborder">
+                    <table width='100%'>
+                        <tr id="report">
+                            <td><strong>Date wiped:</strong></td>
+                            <td>&nbsp;&nbsp;{{ wipe_date_eng }}</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr id="report">
+                            <td><strong>Examination date:</strong></td>
+                            <td>&nbsp;&nbsp;{{ date_eng }}</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                    </table>
+           
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align:left;vertical-align:top" id="report">Objects:</th>
+                <td colspan="3" id="addborder">
+                    <table>
+                        <tr id="report">
+                            <td><strong>Wiped objects:</strong></td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ report.wiped_object_eng }}</td>
+                        </tr>
+                        <tr id="report">
+                            <td><strong>Serial number:</strong></td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ report.wiped_serial_number }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr id="report">
+                <th style="text-align:left;vertical-align:top" id="report">Research:</th>
+                <td colspan="3" id="addborder">Wipe tests will be analyzed without any pre-treatment using a scintillate detector counter.
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+            <tr id="report">
+                <th style="text-align:left;vertical-align:top" id="report">Apparatus:</th>
+                <td colspan="3" id="addborder">{{ report.device_eng }}
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+            <tr id="report">
+                <th style="text-align:left;vertical-align:top">Explanation:</th>
+                <td colspan="3" id="addborder"><strong>Regulations:</strong>
+                    <br/>Operation manual for DKS-96, BDZB-96, BDZA-96T<br/>
+                    <strong>MU 2.6.5.032-2017</strong> Control of radioactive contamination of surfaces<br/>
+                    <strong>SP 2.6.1.1281-03</strong> Radiation safety rules for personnel and citizen during transportation of radioactive materials (substances)<br/>
+                    <strong>SP 2.6.1.1202-03</strong> Hygienic requirements for the usage of sealed radioactive sources during geophysical operations at wellsites<br/>
+                    <strong>SP 2.6.1.2523-09</strong> Radiation Safety Standards (NRB-99/2009)<br/>
+                    <strong>SP 2.6.1.2612-10</strong> General sanitary rules for radiation safety provision (OSPORB-99/2010)<br/>
+                    <strong>GOST R 51919-2002 (ISO 9978-92).</strong>State standard of the Russian Federation. Sealed radionuclide sources of ionizing radiation. Leak test methods<br/>
+                    <br/>Russian Law makes a difference between wipe tests taken directly from source capsule (a leak test) and contamination checks.  
+                        Contamination checks of package surface a wiped off Alfa emitter of <br/>
+                        1 particles /min x cm2 or more or a wiped off Beta emitter of 10 particles /min x cm2 is to be considered as radioactive contamination. 
+                        Contamination checks of source container surface a wiped off Alfa emitter of 1 particles /min x cm2 or more or a wiped off Beta emitter of<br/>
+                        100 particles /min x cm2 is to be considered as radioactive contamination.<br/>
+                        <br/>
+                </td>
+            </tr>
+            <tr id="report">
+                <th rowspan="3" style="text-align:left;vertical-align:top">Result:</th>
+                <td id='addborder'>
+                    <table width='100%'>
+                        <tr>
+                            <td style="text-align:center">BKG CPM</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">{{ report.bkg_cpm }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td id='addborder'>
+                    <table width='100%'>
+                        <tr>
+                            <td style="text-align:center">GROSS CPM</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">{{ report.gross_cpm }}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td id='addborder'>
+                    <table width='100%'>
+                        <tr>
+                            <td style="text-align:center">NET CPM</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center">{{ report.net_cpm }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" id='addborder'>
+                    <table width='100%'>
+                        <tr id='report'>
+                            <td width='33%' style="text-align:center">THE REMOVABLE ACTIVITY</td>
+                            <td>{{ report.removable_activity_micro_ci }} uCi</td>
+                        </tr>
+                        <tr id='report'>
+                            <td>&nbsp;</td>
+                            <td style="text-align:left">{{ report.removable_activity_bq }} Bq</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr id="report">
+                <td colspan="3" id="addborder">
+                    All wipe tests had a measured activity of less than the detection limit.<br/>
+                    The definition of leaking source is a result of wipe test is more than 0.005 microCi inclusively.<br/>
+                    In accordance with ICAO TI and IATA DGR the level of non-fixed radioactive contamination on any external surface of any package must not exceed 4 Bq/cm2 for β and γ emitters.
+                    <br/>
+                    <br/>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td id="signature">Signature:</td>
+                <td><img style="height: 50%; width: 55%" src="{{ signature_path }}"></td>
+            </tr>
+        </table>
+    </div>
+        <div class='container'>
+            <img style="width: 1000px; height: auto" src="{{ photo_link }}">  
+        </div>    
+  </body>
+</html>

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex justify-content-center">
+        <div class="col-6 mt-3 mb-3">
+            <form action="/reports" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group mb-3">
+                  {{ form.report_field() }}
+                </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class='col-3'>
+                            <button type="submit" class="w-100 btn btn-lg btn-primary" onclick="$('#loading').show();">Search</button>
+                        </div>
+                        <div class='col-3'>
+                            <a href="{{ url_for('all_reports') }}"><button type="button" class="w-100 btn btn-lg btn-primary" onclick="$('#loading').show();">Show all</button></a>
+                        </div>   
+                    </div>
+            </form>
+        </div>
+    </div>
+{% if report %}
+    <table class="table table-bordered">
+        <tbody>
+            {% if correct_report.count() != 0 %}
+            <tr>
+                <th scope="row">Report №</th>
+                {% if current_user.is_admin or current_user.is_dosimetrist %}
+                    <th scope="row">Status</th>
+                {% endif %}
+                <th scope="row">Report date</th>
+                <th scope="row">Source serial №</th>
+                <th scope="row">Source code</th>
+            </tr>
+            {% else %}
+            <th scope="row">No reports found</th>
+            {% endif %}
+            {% for report in correct_report %}
+            <tr>
+                {% if current_user.is_user %}
+                <td><a href="{{ url_for('pdf_render', report_path = report.report_path) }}">{{ report.report_number }}</a></td>
+                {% else %}
+                <td><a href="{{ url_for('chosen_report', report_path=report.report_path) }}">{{ report.report_number }}</a></td>
+                {% endif %}
+                {% if current_user.is_admin or current_user.is_dosimetrist %}
+                    <td>{{ report.status }}</td>
+                {% endif %}
+                <td>{{ report.report_date }}</td>
+                <td>{{ report.source_serial_number }}</td>
+                <td>{{ report.source_code }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endif %}
+{% endblock %}

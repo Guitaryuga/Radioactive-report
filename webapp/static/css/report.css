@@ -1,0 +1,69 @@
+#adress {
+    border-bottom-style: double; /* Стиль линии внизу */
+    border-bottom-color: solid black; /* Цвет линии внизу */
+    font-family: 'Times New Roman';
+    font-style: italic;
+    font-size: 14pt;
+    }
+#phones {
+    font-family: 'Times New Roman';
+    font-style: italic;
+    font-size: 13pt;
+    }
+#laboratory{
+        font-family: 'Carlito';
+        font-weight: bold;
+        font-size: 17pt;
+        }
+#license{
+     font-family: 'Carlito';
+     font-size: 14pt;
+    }
+#logo {
+font-family: 'Times New Roman';
+font-style: italic;
+font-weight: bold;
+font-size: 29pt;
+}
+#margin{
+    margin-bottom: 2px;
+}
+#negativemargin-bottom{
+    margin-bottom: -10px;
+}
+#negativemargin-top{
+    margin-top: -10px;
+}
+#reportnumber {
+font-family: 'Carlito';
+font-size: 16pt;
+font-weight: bold;
+}
+#report{
+font-family: 'Carlito';
+font-size: 14pt;
+padding: 0px;
+}
+#addborder{
+    border: 2px solid black;
+    padding: 2px;
+    }
+#signature{
+font-family: 'Carlito';
+font-size: 17pt;
+}
+table {
+    border-collapse: collapse;
+}
+th {
+    border: 2px solid black;
+}
+.keep-together {
+    page-break-inside: avoid;
+}
+.break-before {
+    page-break-before: always;
+}
+.break-after {
+    page-break-after: always;
+}
