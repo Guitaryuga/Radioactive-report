@@ -55,7 +55,7 @@ def create_app(test_config=None):
     admin.add_view(UploadAdmin(path, '/uploads/', name='Upload images'))
     admin.add_link(MainIndexLink(name='Main Website'))
 
- 
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
@@ -107,7 +107,7 @@ def create_app(test_config=None):
         """Страница с функцией поиска и демонстрации списка отчетов.
 
         Поиск осуществляется по уникальному номеру отчета или по серийному номеру источника.
-        Вывод результатов отличается, если пользователь является администратором - для администратора
+        Вывод результатов отличается, если пользователь является администратором или дозимтеристом - для них
         доступны для просмотра отчеты со статусом incomplete - с некоторыми незаполненными полями.
         """
         title = "Search reports"
@@ -140,6 +140,7 @@ def create_app(test_config=None):
         """Страница подробного отчета.
 
         Форма поиска остается для быстрого переключения между отчетами.
+        Доступна только администраторам и дозиметристам.
         """
         if current_user.is_user:
             flash('Access denied', 'danger')
@@ -157,9 +158,9 @@ def create_app(test_config=None):
     def all_reports():
         """Страница вывода ВСЕХ существующих отчетов.
 
-        Если текущий пользователь является администратором, то ему будут доступны отчеты
-        со статусами incomplete и complete, другим же пользователям доступны только отчеты
-        со статусом complete.
+        Если текущий пользователь является администратором или дозимтеристом,
+        то ему будут доступны отчеты со статусами incomplete и complete,
+        другим же пользователям доступны только отчеты со статусом complete.
         """
         title = "All reports"
         if current_user.is_user:
@@ -283,8 +284,8 @@ def create_app(test_config=None):
     def test():
         """Тестовая страничка для проверки отображения материала и результатов запросов"""
         title = "test page"
-        test_sample = Report.math_probe_freq(20, 30)
-        test_sample2 = test_sample
+        test_sample = "It's just a test page #1"
+        test_sample2 = "No, really #2"
         test_sample3 = "Just use for whatever reasons #3"
         return render_template('test_template.html', page_title=title, test_sample=test_sample,
                                test_sample2=test_sample2,
