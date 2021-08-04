@@ -54,7 +54,7 @@ export FLASK_APP=webapp && export FLASK_ENV=development && flask run
 ```
 Сохраните файл и в корне проекта выполните в консоли команду chmod +x run.sh. После этого запуск осуществляется с помощью команды ./run.sh
 
-Если вы пользователь Windows:
+# Если вы пользователь Windows:
 - Необходимо вручную скачать и установить версию для Windows c [сайта](https://wkhtmltopdf.org/downloads.html).
 
 После чего в файле __init.py__ в функции pdf_render перед строчкой options нужно прописать 
