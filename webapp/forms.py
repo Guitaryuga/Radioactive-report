@@ -136,7 +136,7 @@ class ReportForm(FlaskForm):
                              validators=[DataRequired()],
                              format='%Y-%m-%d',
                              render_kw={"class": "form-control"})
-    foto = FileField('Прикрепите фото', render_kw={"class": "form-control"})
+    foto = FileField('Прикрепите фото(макс.размер 5МБ)', render_kw={"class": "form-control"})
     bill = StringField('Счет', render_kw={"class": "form-control"})
     comments = StringField('Комментарии', render_kw={"class": "form-control"})
     submit = SubmitField('Создать отчет',

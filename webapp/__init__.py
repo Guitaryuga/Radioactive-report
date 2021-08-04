@@ -55,7 +55,6 @@ def create_app(test_config=None):
     admin.add_view(UploadAdmin(path, '/uploads/', name='Upload images'))
     admin.add_link(MainIndexLink(name='Main Website'))
 
-
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
@@ -151,7 +150,6 @@ def create_app(test_config=None):
             correct_report = Report.query.filter(Report.report_path == report_path).all()
             return render_template('report_page.html', page_title=title, form=form,
                                    correct_report=correct_report)
-
 
     @app.route("/reports/all")
     @login_required

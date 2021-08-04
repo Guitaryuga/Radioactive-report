@@ -38,7 +38,7 @@
             {% for report in correct_report %}
             <tr>
                 {% if current_user.is_user %}
-                <td><a href="{{ url_for('pdf_render', report_path = report.report_path) }}">{{ report.report_number }}</a></td>
+                <td><a href="{{ url_for('pdf_render', report_path = report.report_path) }}" onclick="$('#loading').show();">{{ report.report_number }}</a></td>
                 {% else %}
                 <td><a href="{{ url_for('chosen_report', report_path=report.report_path) }}">{{ report.report_number }}</a></td>
                 {% endif %}
@@ -51,8 +51,6 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
-
-    
+    </table> 
 {% endif %}
 {% endblock %}
