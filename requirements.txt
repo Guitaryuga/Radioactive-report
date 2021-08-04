@@ -6,13 +6,6 @@ chardet==4.0.0
 click==7.1.2
 colorama==0.4.4
 fdfgen==0.16.1
-flake8==3.9.1
-flake8-bugbear==21.4.3
-flake8-builtins==1.5.3
-flake8-commas==2.0.0
-flake8-import-order==0.18.1
-flake8-polyfill==1.0.2
-flake8-variables-names==0.0.4
 Flask==1.1.2
 Flask-Admin==1.5.8
 Flask-Login==0.5.0
