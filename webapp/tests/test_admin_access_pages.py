@@ -77,6 +77,6 @@ def test_admin_report(test_client, admin_login):
 def test_admin_uploads(test_client, admin_login):
     """Тест доступа к загруженным на сервер изображениям из аккаунта администратора
     При наличии доступа, не должно быть перенаправления на главную страницу."""
-    response = test_client.get('uploads/20-456-2.jpg', follow_redirects=True)
+    response = test_client.get('uploads/test_one.jpg', follow_redirects=True)
     assert response.status_code == 200
     assert b'Login page' not in response.data

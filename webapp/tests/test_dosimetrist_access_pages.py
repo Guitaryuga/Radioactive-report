@@ -78,6 +78,6 @@ def test_dosimetrist_report(test_client, dosimetrist_login):
 def test_dosimetrist_uploads(test_client, dosimetrist_login):
     """Тест доступа к загруженным на сервер изображениям из аккаунта дозиметриста.
     При наличии доступа, не должно быть перенаправления на главную страницу."""
-    response = test_client.get('uploads/20-456-2.jpg', follow_redirects=True)
+    response = test_client.get('uploads/test_one.jpg', follow_redirects=True)
     assert response.status_code == 200
     assert b'Login page' not in response.data
