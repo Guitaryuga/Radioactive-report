@@ -27,7 +27,9 @@ class MyAdminIndexView(AdminIndexView):
 
 
 class UserView(ModelView):
-    """View для User-модели"""
+    """View для User-модели
+    Для смены пароля или установки пароля создано отдельное поле
+    set_password, которое хеширует пароль для хранения в безопасном виде"""
     def is_accessible(self):
         try:
             return current_user.is_admin
@@ -123,8 +125,10 @@ class ReportView(ModelView):
 
     form_extra_fields = {'file': FileField('File')}
 
-    column_exclude_list = ('device', 'customer_eng', 'task_and_place_eng', 'source_code_eng', 'isotope_eng',
-                           'activity_eng', 'wiped_object_eng', 'device_eng')
+    column_exclude_list = ('device', 'customer_eng', 'task_and_place_eng', 'source_code_eng', 'efficiency',
+                           'isotope_eng', 'activity_eng', 'wiped_object_eng', 'device_eng', 'report_path',
+                           'task_and_place', 'isotope', 'activity', 'photo_link', 'ike_recieved', 'days_for_analasys',
+                           'comments', 'bill')
     column_default_sort = ('report_date', True)
     column_searchable_list = ('report_number', 'source_serial_number')
     column_filters = ('status', 'source_code', 'source_serial_number')
