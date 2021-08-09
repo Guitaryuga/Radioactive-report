@@ -1,4 +1,4 @@
-# Radioactive-report
+# Radioactive-report ![Status](https://github.com/Guitaryuga/Radioactive-report/actions/workflows/CI/badge.svg)
 
 Radioactive report - это веб-приложение, включающее в себя базу данных результатов протирочных тестов радиоактивных источников, а также позволяющее генерировать готовые отчеты по данным тестам в формате PDF.
 
