@@ -1,6 +1,7 @@
 import os
 import os.path as op
 import pdfkit
+import flask_excel as excel
 
 from babel.dates import format_date
 from flask import Flask, flash, redirect, render_template, request, url_for, make_response, send_from_directory
@@ -32,6 +33,7 @@ def create_app(test_config=None):
     app.config['FLASK_ADMIN_FLUID_LAYOUT'] = True
     db.init_app(app)
     migrate = Migrate(app, db)
+    excel.init_excel(app)
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'index_login'
@@ -330,6 +332,41 @@ def create_app(test_config=None):
         response.headers['Content-Disposition'] = 'inline'
 
         return response
+
+    @app.route('/import', methods=['GET', 'POST'])
+    @login_required
+    def doimport():
+        if current_user.is_admin:
+            if request.method == 'POST':
+                def isotope_init_func(row):
+                    i = Isotope(row['rus'], row['eng'])
+                    return i
+
+                request.save_to_database(field_name='file', session=db.session, table=Isotope,
+                                         initializer=isotope_init_func)
+                flash('Data uploaded successfully!', 'success')
+                return redirect(url_for('main_page'))
+            return render_template('import_data.html', page_title="Import data")
+        else:
+            flash('Access denied', 'danger')
+            return redirect(url_for('main_page'))
+
+
+    @app.route('/export', methods=['GET'])
+    @login_required
+    def reports_export():
+        if current_user.is_admin:
+            query_sets = Report.query.all()
+            column_names = ['id', 'status', 'report_number', 'report_date', 'customer', 'task_and_place', 'source_code',
+                            'isotope', 'activity', 'source_serial_number', 'wiped_object', 'wiped_serial_number',
+                            'wipe_date', 'bkg_cpm', 'gross_cpm', 'net_cpm', 'removable_activity_micro_ci',
+                            'removable_activity_bq', 'limit_micro_ci', 'device', 'bill_for', 'results_sent',
+                            'days_for_analasys', 'comments', 'bill']
+            return excel.make_response_from_query_sets(query_sets, column_names, "xls")
+        else:
+            flash('Access denied', 'danger')
+            return redirect(url_for('main_page'))
+
 
     @app.route('/uploads/<filename>')
     @login_required

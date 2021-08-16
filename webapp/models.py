@@ -170,6 +170,10 @@ class Isotope(db.Model):
     rus = db.Column(db.String)
     eng = db.Column(db.String)
 
+    def __init__(self, rus, eng):
+        self.rus = rus
+        self.eng = eng
+
     def __repr__(self):
         return f'{self.rus}'
 
@@ -180,6 +184,10 @@ class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rus = db.Column(db.String)
     eng = db.Column(db.String)
+
+    def __init__(self, rus, eng):
+        self.rus = rus
+        self.eng = eng
 
     def __repr__(self):
         return f'{self.rus}'
@@ -231,6 +239,12 @@ class QuartalNumber(db.Model):
     __tablename__ = 'QuartalNumber'
     id = db.Column(db.Integer, primary_key=True)
     quartal = db.Column(db.String)
+
+    def __init__(self, quartal):
+        self.quartal = quartal
+
+    def __repr__(self):
+        return f'{self.quartal}'
 
 
 class MicroCiLimit(db.Model):
