@@ -53,13 +53,11 @@ def test_new_report(new_report):
 
 
 def test_new_task_and_place(new_task_and_place):
-    assert new_task_and_place.id == '1'
     assert new_task_and_place.rus == 'Анализ, Москва'
     assert new_task_and_place.eng == 'Analasys, Moscow'
 
 
 def test_new_source_code(new_source_code):
-    assert new_source_code.id == '1'
     assert new_source_code.rus == 'X.7'
     assert new_source_code.eng == 'X.7'
     assert new_source_code.isotope_id == '1'
@@ -68,43 +66,36 @@ def test_new_source_code(new_source_code):
 
 
 def test_new_isotope(new_isotope):
-    assert new_isotope.id == '1'
     assert new_isotope.rus == 'Цезий-137'
     assert new_isotope.eng == 'Cs-137'
 
 
 def test_new_activity(new_activity):
-    assert new_activity.id == '1'
     assert new_activity.rus == '7,4 ГБк (0,2 Кюри)'
     assert new_activity.eng == '7,4 GBq (0,2 Ci)'
 
 
 def test_new_wiped_objects(new_wiped_objects):
-    assert new_wiped_objects.id == '1'
     assert new_wiped_objects.rus == 'Плотномер'
     assert new_wiped_objects.eng == 'Densitometer'
 
 
 def test_new_devices(new_devices):
-    assert new_devices.id == '1'
     assert new_devices.rus == 'Дозиметр'
     assert new_devices.eng == 'Dosimeter'
 
 
 def test_new_customer(new_customer):
-    assert new_customer.id == '1'
     assert new_customer.rus == 'ООО «ТопНефтеГаз»'
     assert new_customer.eng == 'LLC «TopNefteGas»'
 
 
 def test_new_documents(new_documents):
-    assert new_documents.id == '1'
     assert new_documents.rus == 'Лицензия №1 от 21.03.2018'
     assert new_documents.eng == 'License #1 from 21/03/2018'
 
 
 def test_new_qurtal_number(new_quartal_number):
-    assert new_quartal_number.id == '1'
     assert new_quartal_number.quartal == '20/325'
 
 

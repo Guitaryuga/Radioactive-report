@@ -71,3 +71,36 @@ def test_user_uploads(test_client, user_login):
     response = test_client.get('uploads/test_one.jpg', follow_redirects=True)
     assert response.status_code == 200
     assert b'Login page' not in response.data
+
+
+def test_user_import(test_client, user_login):
+    """Тест доступа к странице импорта excel-файлов для БД.
+    Доступна только администратору, идет перенаправление на главную."""
+    response = test_client.get('/import', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Import data' not in response.data
+    assert b'Search report' in response.data
+
+
+def test_user_export_reports(test_client, user_login):
+    """Тест доступа к экспорту отчетов в excel-формате
+    Доступ есть только у администратора, идет перенаправление на главную."""
+    response = test_client.get('/export_reports', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Search report' in response.data
+
+
+def test_user_export_db(test_client, user_login):
+    """Тест доступа к экспорту БД в excel-формате
+    Доступ есть только у администратора, идет перенаправление на главную."""
+    response = test_client.get('export_db', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Search report' in response.data
+
+
+def test_user_excel_tables_download(test_client, user_login):
+    """Тест доступа к возможности загрузки excel-шаблона.
+    Данная ссылка должна быть доступна и работать только у администратора."""
+    response = test_client.get('/admin/xlsxadmin/db_input_blank.xlsx', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Search report' in response.data

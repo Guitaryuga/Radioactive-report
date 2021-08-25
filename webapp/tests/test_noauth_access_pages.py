@@ -80,3 +80,39 @@ def test_uploads_without_auth(test_client):
     assert response.status_code == 200
     assert b'Login page' in response.data
     assert b'danger' in response.data
+
+
+def test_import_without_auth(test_client):
+    """Тест доступа к странице импорта excel-файлов для БД без авторизации.
+    Должно происходить перенаправление на страницу логина и алерт - danger."""
+    response = test_client.get('/import', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Login page' in response.data
+    assert b'danger' in response.data
+
+
+def test_export_reports_without_auth(test_client):
+    """Тест доступа к экспорту отчетов в excel-формате без авторизации.
+    Должно происходить перенаправление на страницу логина и алерт - danger."""
+    response = test_client.get('/export_reports', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Login page' in response.data
+    assert b'danger' in response.data
+
+
+def test_export_db_without_auth(test_client):
+    """Тест доступа к экспорту БД в excel-формате без авторизации.
+    Должно происходить перенаправление на страницу логина и алерт - danger."""
+    response = test_client.get('export_db', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Login page' in response.data
+    assert b'danger' in response.data
+
+
+def test_excel_tables_download_without_auth(test_client):
+    """Тест доступа к возможности загрузки excel-шаблона без авторизации.
+    Должно происходить перенаправление на страницу логина и алерт - danger."""
+    response = test_client.get('/admin/xlsxadmin/db_input_blank.xlsx', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'Login page' in response.data
+    assert b'danger' in response.data

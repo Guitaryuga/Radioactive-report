@@ -247,7 +247,7 @@ class DocumentsView(ModelView):
 
 
 class UploadAdmin(FileAdmin):
-    """View для доступа к модели Upload images для просмотра, редактирования и обновления."""
+    """View для доступа к разделу Upload images для просмотра, редактирования и обновления."""
     def is_accessible(self):
         try:
             return current_user.is_admin
@@ -257,7 +257,21 @@ class UploadAdmin(FileAdmin):
 
     def inaccessible_callback(self, name, **kwargs):
         flash("You don't have rights to view this page", 'danger')
-        return redirect(url_for('material.index', next=request.url))
+        return redirect(url_for('main_page', next=request.url))
+
+
+class XLSXAdmin(FileAdmin):
+    """View для доступа к разделу с xlsx таблицами для просмотра, редактирования и обновления."""
+    def is_accessible(self):
+        try:
+            return current_user.is_admin
+        except AttributeError:
+            flash("You don't have rights to view this page",
+                  'danger')
+
+    def inaccessible_callback(self, name, **kwargs):
+        flash("You don't have rights to view this page", 'danger')
+        return redirect(url_for('main_page', next=request.url))
 
 
 class MainIndexLink(MenuLink):
