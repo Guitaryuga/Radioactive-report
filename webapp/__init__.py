@@ -7,6 +7,8 @@ from babel.dates import format_date
 from flask import Flask, flash, redirect, render_template, request, url_for, make_response, send_from_directory
 from flask_admin import Admin
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
+from pyexcel.exceptions import FileTypeNotSupported
+from pyexcel_io.exceptions import SupportingPluginAvailableButNotInstalled
 from flask_migrate import Migrate
 from werkzeug.utils import secure_filename
 from sqlalchemy import desc
@@ -14,13 +16,14 @@ from sqlalchemy import desc
 from webapp.custom_views import (MyAdminIndexView, UserView, QuartalNumberView, ReportView, CustomerView,
                                  TaskAndPlaceView, SourceCodeView, IsotopeView, ActivityView,
                                  WipedObjectsView, DevicesView, DocumentsView, UploadAdmin, MicroCIView,
-                                 MainIndexLink)
+                                 MainIndexLink, XLSXAdmin)
 from webapp.forms import LoginForm, UserCreation, ReportForm, SearchForm
 from webapp.models import (db, User, Customer, TaskAndPlace, SourceCode, Isotope, Activity, WipedObjects,
                            Devices, Report, QuartalNumber, MicroCiLimit, Documents)
 
 
 path = op.join(op.dirname(__file__), 'uploads')
+xlsx_path = op.join(op.dirname(__file__), 'xlsx')
 
 
 def create_app(test_config=None):
@@ -55,6 +58,7 @@ def create_app(test_config=None):
     admin.add_view(WipedObjectsView(WipedObjects, db.session))
     admin.add_view(DevicesView(Devices, db.session))
     admin.add_view(UploadAdmin(path, '/uploads/', name='Upload images'))
+    admin.add_view(XLSXAdmin(xlsx_path, '/xlsx/', name='XLSX tables'))
     admin.add_link(MainIndexLink(name='Main Website'))
 
     @login_manager.user_loader
@@ -336,25 +340,78 @@ def create_app(test_config=None):
     @app.route('/import', methods=['GET', 'POST'])
     @login_required
     def doimport():
-        if current_user.is_admin:
-            if request.method == 'POST':
-                def isotope_init_func(row):
-                    i = Isotope(row['rus'], row['eng'])
-                    return i
+        """Функция импорта данных для БД из xls,xlsx файлов.
 
-                request.save_to_database(field_name='file', session=db.session, table=Isotope,
-                                         initializer=isotope_init_func)
-                flash('Data uploaded successfully!', 'success')
+        Задействует pyexcel, содержит в себе перечень функций-инициализаторов
+        для чтения соответствующих рядов из таблиц-моделей и excel-таблиц.
+        Чтобы проверить и расширить перечень поддерживаемых форматов,
+        работающих с pyexcel необходимо убрать исключение
+        SupportingPluginAvailableButNotInstalled."""
+        try:
+            if current_user.is_admin:
+                if request.method == 'POST':
+                    def documents_init_func(row):
+                        documents = Documents(row['rus'], row['eng'])
+                        return documents
+
+                    def customer_init_func(row):
+                        customer = Customer(row['rus'], row['eng'])
+                        return customer
+
+                    def taskandplace_init_func(row):
+                        task_and_place = TaskAndPlace(row['rus'], row['eng'])
+                        return task_and_place
+
+                    def source_code_init_func(row):
+                        source_code = SourceCode(row['rus'], row['eng'], row['isotope_id'],
+                                                 row['activity_id'], row['efficiency'])
+                        return source_code
+
+                    def isotope_init_func(row):
+                        isotope = Isotope(row['rus'], row['eng'])
+                        return isotope
+
+                    def activity_init_func(row):
+                        activity = Activity(row['rus'], row['eng'])
+                        return activity
+
+                    def wiped_objects_init_func(row):
+                        wiped_objects = WipedObjects(row['rus'], row['eng'])
+                        return wiped_objects
+
+                    def devices_init_func(row):
+                        devices = Devices(row['rus'], row['eng'])
+                        return devices
+
+                    tables = [Documents, Customer, TaskAndPlace, SourceCode, Isotope, Activity, WipedObjects, Devices]
+                    initializers = [documents_init_func, customer_init_func, taskandplace_init_func,
+                                    source_code_init_func, isotope_init_func, activity_init_func,
+                                    wiped_objects_init_func, devices_init_func]
+
+                    request.save_book_to_database(field_name='file', session=db.session,
+                                                  tables=tables, initializers=initializers)
+                    flash('Data uploaded successfully!', 'success')
+                    return redirect(url_for('main_page'))
+                return render_template('import_data.html', page_title="Import data")
+            else:
+                flash('Access denied', 'danger')
                 return redirect(url_for('main_page'))
-            return render_template('import_data.html', page_title="Import data")
-        else:
-            flash('Access denied', 'danger')
-            return redirect(url_for('main_page'))
+        except IOError:
+            flash('Unsupported format or no file chosen', 'danger')
+            return redirect(url_for('doimport'))
+        except FileTypeNotSupported:
+            flash('Unsupported format or no file chosen', 'danger')
+            return redirect(url_for('doimport'))
+        except SupportingPluginAvailableButNotInstalled:
+            flash('Unsupported format or no file chosen', 'danger')
+            return redirect(url_for('doimport'))
 
-
-    @app.route('/export', methods=['GET'])
+    @app.route('/export_reports', methods=['GET'])
     @login_required
     def reports_export():
+        """Функция экспорта отчетов из БД в формате xlsx.
+
+        Содержит только колонки отчета на русском языке."""
         if current_user.is_admin:
             query_sets = Report.query.all()
             column_names = ['id', 'status', 'report_number', 'report_date', 'customer', 'task_and_place', 'source_code',
@@ -362,17 +419,40 @@ def create_app(test_config=None):
                             'wipe_date', 'bkg_cpm', 'gross_cpm', 'net_cpm', 'removable_activity_micro_ci',
                             'removable_activity_bq', 'limit_micro_ci', 'device', 'bill_for', 'results_sent',
                             'days_for_analasys', 'comments', 'bill']
-            return excel.make_response_from_query_sets(query_sets, column_names, "xls")
+            return excel.make_response_from_query_sets(query_sets, column_names, "xlsx")
         else:
             flash('Access denied', 'danger')
             return redirect(url_for('main_page'))
 
+    @app.route('/export_db', methods=['GET'])
+    @login_required
+    def db_export():
+        """Функция экспорта значений БД, необходимых для заполнения отчета.
+
+        Перечень таблиц, доступных для выгрузки, контролируется переменной tables."""
+        if current_user.is_admin:
+            tables = [Documents, Customer, TaskAndPlace, SourceCode, Isotope, Activity, WipedObjects, Devices]
+            return excel.make_response_from_tables(session=db.session, tables=tables, file_type="xlsx")
+        else:
+            flash('Access denied', 'danger')
+            return redirect(url_for('main_page'))
+
+    @app.route('/admin/xlsxadmin/<filename>', methods=['GET'])
+    @login_required
+    def table_download(filename):
+        """Функция загрузки xlsx-шаблонов для восстановления/массовой загрузки или обновления БД.
+        Доступна только администратору, принмиает в качестве аргумента имя загружаемого файла,
+        размещенного в папке xlsx на сервере."""
+        if current_user.is_admin:
+            return send_from_directory(xlsx_path, filename)
+        else:
+            return redirect(url_for('main_page'))
 
     @app.route('/uploads/<filename>')
     @login_required
     def uploaded_files(filename):
         """Страница с загруженными на сервер файлами в папаке uploads.
-        Принимает в себя название загруженного на сервер файла в качестве аргумента.
+        Принимает в качесвте аргумента название загруженного на сервер файла в качестве аргумента.
         """
         path = app.config['UPLOADED_PATH']
         return send_from_directory(path, filename)

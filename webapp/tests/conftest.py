@@ -51,56 +51,56 @@ def new_report():
 
 @pytest.fixture(scope='module')
 def new_task_and_place():
-    task_and_place = TaskAndPlace(id='1', rus='Анализ, Москва', eng='Analasys, Moscow')
+    task_and_place = TaskAndPlace(rus='Анализ, Москва', eng='Analasys, Moscow')
     return task_and_place
 
 
 @pytest.fixture(scope='module')
 def new_source_code():
-    source_code = SourceCode(id='1', rus='X.7', eng='X.7', isotope_id='1', activity_id='1',
+    source_code = SourceCode(rus='X.7', eng='X.7', isotope_id='1', activity_id='1',
                              efficiency=0.95)
     return source_code
 
 
 @pytest.fixture(scope='module')
 def new_isotope():
-    isotope = Isotope(id='1', rus='Цезий-137', eng='Cs-137')
+    isotope = Isotope(rus='Цезий-137', eng='Cs-137')
     return isotope
 
 
 @pytest.fixture(scope='module')
 def new_activity():
-    activity = Activity(id='1', rus='7,4 ГБк (0,2 Кюри)', eng='7,4 GBq (0,2 Ci)')
+    activity = Activity(rus='7,4 ГБк (0,2 Кюри)', eng='7,4 GBq (0,2 Ci)')
     return activity
 
 
 @pytest.fixture(scope='module')
 def new_wiped_objects():
-    wiped_objects = WipedObjects(id='1', rus='Плотномер', eng='Densitometer')
+    wiped_objects = WipedObjects(rus='Плотномер', eng='Densitometer')
     return wiped_objects
 
 
 @pytest.fixture(scope='module')
 def new_devices():
-    devices = Devices(id='1', rus='Дозиметр', eng='Dosimeter')
+    devices = Devices(rus='Дозиметр', eng='Dosimeter')
     return devices
 
 
 @pytest.fixture(scope='module')
 def new_customer():
-    customer = Customer(id='1', rus='ООО «ТопНефтеГаз»', eng='LLC «TopNefteGas»')
+    customer = Customer(rus='ООО «ТопНефтеГаз»', eng='LLC «TopNefteGas»')
     return customer
 
 
 @pytest.fixture(scope='module')
 def new_documents():
-    documents = Documents(id='1', rus='Лицензия №1 от 21.03.2018', eng='License #1 from 21/03/2018')
+    documents = Documents(rus='Лицензия №1 от 21.03.2018', eng='License #1 from 21/03/2018')
     return documents
 
 
 @pytest.fixture(scope='module')
 def new_quartal_number():
-    quartal = QuartalNumber(id='1', quartal='20/325')
+    quartal = QuartalNumber(quartal='20/325')
     return quartal
 
 
@@ -192,3 +192,37 @@ def report_with_heavy_image(test_client):
                                                                           content_type='application/octet-stream'),
                                                          bill='1456-7895', comments='Test report with file'),
                             content_type="multipart/form-data", follow_redirects=True)
+
+
+@pytest.fixture
+def import_start_db(test_client):
+    my_file = os.path.join('webapp/xlsx/db_start_version.xlsx')
+    return test_client.post('/import', data=dict(file=FileStorage(stream=open(my_file, 'rb'),
+                                                                  filename='db_start_version.xlsx',
+                                                                  content_type='application/octet-stream')),
+                            follow_redirects=True)
+
+
+@pytest.fixture
+def import_blank_input(test_client):
+    my_file = os.path.join('webapp/xlsx/db_input_blank.xlsx')
+    return test_client.post('/import', data=dict(file=FileStorage(stream=open(my_file, 'rb'),
+                                                                  filename='db_input_blank.xlsx',
+                                                                  content_type='application/octet-stream')),
+                            follow_redirects=True)
+
+
+@pytest.fixture
+def empty_file_field(test_client):
+    return test_client.post('/import', data=dict(file=FileStorage(filename='',
+                                                                  content_type='application/octet-stream')),
+                            follow_redirects=True)
+
+
+@pytest.fixture
+def import_unsupported_format(test_client):
+    my_file = os.path.join('webapp/tests/test_small.jpg')
+    return test_client.post('/import', data=dict(file=FileStorage(stream=open(my_file, 'rb'),
+                                                                  filename='test_small.jpg',
+                                                                  content_type='application/octet-stream')),
+                            follow_redirects=True)
