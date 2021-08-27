@@ -1,5 +1,4 @@
 import os
-import os.path as op
 import pdfkit
 import flask_excel as excel
 
@@ -20,10 +19,6 @@ from webapp.custom_views import (MyAdminIndexView, UserView, QuartalNumberView, 
 from webapp.forms import LoginForm, UserCreation, ReportForm, SearchForm
 from webapp.models import (db, User, Customer, TaskAndPlace, SourceCode, Isotope, Activity, WipedObjects,
                            Devices, Report, QuartalNumber, MicroCiLimit, Documents)
-
-
-path = op.join(op.dirname(__file__), 'uploads')
-xlsx_path = op.join(op.dirname(__file__), 'xlsx')
 
 
 def create_app(test_config=None):
@@ -57,8 +52,8 @@ def create_app(test_config=None):
     admin.add_view(ActivityView(Activity, db.session))
     admin.add_view(WipedObjectsView(WipedObjects, db.session))
     admin.add_view(DevicesView(Devices, db.session))
-    admin.add_view(UploadAdmin(path, '/uploads/', name='Upload images'))
-    admin.add_view(XLSXAdmin(xlsx_path, '/xlsx/', name='XLSX tables'))
+    admin.add_view(UploadAdmin(app.config['UPLOADED_PATH'], '/uploads/', name='Upload images'))
+    admin.add_view(XLSXAdmin(app.config['XLSX_PATH'], '/xlsx/', name='XLSX tables'))
     admin.add_link(MainIndexLink(name='Main Website'))
 
     @login_manager.user_loader
@@ -437,15 +432,16 @@ def create_app(test_config=None):
             flash('Access denied', 'danger')
             return redirect(url_for('main_page'))
 
-    @app.route('/admin/xlsxadmin/<filename>', methods=['GET'])
+    @app.route('/xlsx/<filename>', methods=['GET'])
     @login_required
     def table_download(filename):
         """Функция загрузки xlsx-шаблонов для восстановления/массовой загрузки или обновления БД.
         Доступна только администратору, принмиает в качестве аргумента имя загружаемого файла,
         размещенного в папке xlsx на сервере."""
         if current_user.is_admin:
-            return send_from_directory(xlsx_path, filename)
+            return send_from_directory(app.config['XLSX_PATH'], filename)
         else:
+            flash('Access denied', 'danger')
             return redirect(url_for('main_page'))
 
     @app.route('/uploads/<filename>')
@@ -454,7 +450,11 @@ def create_app(test_config=None):
         """Страница с загруженными на сервер файлами в папаке uploads.
         Принимает в качесвте аргумента название загруженного на сервер файла в качестве аргумента.
         """
-        path = app.config['UPLOADED_PATH']
-        return send_from_directory(path, filename)
+        if current_user.is_authenticated:
+            path = app.config['UPLOADED_PATH']
+            return send_from_directory(path, filename)
+        else:
+            flash("You need to sign in first", 'danger')
+            return redirect(url_for("index_login"))
 
     return app

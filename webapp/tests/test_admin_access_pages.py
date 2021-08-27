@@ -111,6 +111,6 @@ def test_admin_export_db(test_client, admin_login):
 def test_admin_excel_tables_download(test_client, admin_login):
     """Тест доступа к возможности загрузки excel-шаблона.
     Данная ссылка должна быть доступна и работать только у администратора."""
-    response = test_client.get('/admin/xlsxadmin/db_input_blank.xlsx', follow_redirects=True)
+    response = test_client.get('/xlsx/db_input_blank.xlsx', follow_redirects=True)
     assert response.status_code == 200
     assert b'Search report' not in response.data
