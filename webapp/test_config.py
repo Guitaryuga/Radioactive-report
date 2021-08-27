@@ -14,4 +14,5 @@ TESTING = True
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SECRET_KEY = os.getenv('SECRET_KEY')
 UPLOADED_PATH = os.path.join(basedir, 'uploads')
+XLSX_PATH = os.path.join(basedir, 'xlsx')
 STATIC_PATH = os.path.join(basedir, 'static')

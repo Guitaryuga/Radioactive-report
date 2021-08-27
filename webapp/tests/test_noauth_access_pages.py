@@ -112,7 +112,7 @@ def test_export_db_without_auth(test_client):
 def test_excel_tables_download_without_auth(test_client):
     """Тест доступа к возможности загрузки excel-шаблона без авторизации.
     Должно происходить перенаправление на страницу логина и алерт - danger."""
-    response = test_client.get('/admin/xlsxadmin/db_input_blank.xlsx', follow_redirects=True)
+    response = test_client.get('/xlsx/db_input_blank.xlsx', follow_redirects=True)
     assert response.status_code == 200
     assert b'Login page' in response.data
     assert b'danger' in response.data
